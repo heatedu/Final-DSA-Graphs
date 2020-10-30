@@ -1,0 +1,29 @@
+class Solution {
+public:
+    Node* cloneGraph(Node* root) {
+        if(root==NULL)
+            return NULL;
+        Node*node=new Node(root->val);
+        unordered_map<Node*,Node*>m;
+        m[root]=node;
+        queue<Node*>q;
+        q.push(root);
+        while(!q.empty())
+        {
+            Node*front=q.front();
+            q.pop();
+            vector<Node*>v=front->neighbors;
+            for(int i=0;i<v.size();i++)
+            {
+                if(!m[v[i]])
+                {
+                    Node*temp=new Node(v[i]->val);
+                    m[v[i]]=temp;
+                    q.push(v[i]);
+                }
+                m[front]->neighbors.push_back(m[v[i]]);
+            }
+        }
+        return node;
+    }
+};
