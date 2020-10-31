@@ -1,0 +1,42 @@
+//har level p bs vhi node rkho jime bs ek chnge krke dy=usra word mil jae
+
+class Solution {
+public:
+    int ladderLength(string begin, string end, vector<string>&List) {
+        queue<string>q;
+        set<string>s;
+        for(int i=0;i<List.size();i++)
+            s.insert(List[i]);
+        q.push(begin);
+        s.erase(begin);
+        int ans=1;
+        while(!q.empty())
+        {
+            int n=q.size();
+            for(int i=0;i<n;i++)//kyuki har level p jitne node h utne uss time p queue m hnge mtlb jese har level k baad -1 nhi dala h uski jgh jitna q ka size h utna chlado loop ko i vale ko kyuki i vala utna hi chlega jitne har leevel p nodes hnge
+            {
+                string front=q.front();
+                q.pop();
+                if(front==end)
+                    return ans;
+                //s.erase(front);
+                for(int j=0;j<front.size();j++)
+                {
+                    char c=front[j];
+                    for(int k=0;k<26;k++)
+                    {
+                        front[j]='a'+k;
+                        if(s.find(front)!=s.end())
+                        {
+                            q.push(front);
+                            s.erase(front);
+                        }
+                    }
+                    front[j]=c;
+                }
+            }
+            ans++;
+        }
+        return 0;
+    }
+};
