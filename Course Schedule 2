@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<int> findOrder(int n, vector<vector<int>>& prerequisites) {
+         vector<vector<int>> G(n);
+        vector<int> degree(n, 0);
+        for (auto& e : prerequisites)
+        {
+            G[e[1]].push_back(e[0]);degree[e[0]]++;
+        }
+           queue<int> q; 
+           for (int i = 0; i < G.size(); i++)
+           {
+               if (degree[i] == 0) 
+                 q.push(i);
+           }
+            int cnt = 0;
+             vector<int> top_order; 
+              while (!q.empty())
+              { 
+                  int u = q.front(); 
+                   q.pop(); 
+                    top_order.push_back(u); 
+                    for (auto itr = G[u].begin();itr != G[u].end(); itr++)
+                   {
+                       if (--degree[*itr] == 0) 
+                         q.push(*itr); 
+                   }
+                   cnt++; 
+              }
+             vector<int>v;
+            if(cnt==G.size())return top_order;else return v;
+                
+    }
+};
