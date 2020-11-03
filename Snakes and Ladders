@@ -1,0 +1,44 @@
+#define ll int
+#define mp make_pair
+#define fi first
+#define se second
+void getCordinate(int n,int newx, int &r, int &c)
+{
+        r = n-1-(newx-1)/n;
+        c = (newx-1)%n;
+        if((n%2==1 && r%2==1)||(n%2==0 && r%2==0))
+            c = n-1-c;
+}
+class Solution {
+    public:
+    int snakesAndLadders(vector<vector<int>>& board) 
+    {
+        int n=board.size();
+        vector<bool>visited(n*n+1,false);
+        queue<pair<ll,ll>>q;
+        q.push(mp(1,0));
+        visited[1]=true;
+        while(!q.empty())
+        {
+            pair<ll,ll>front=q.front();
+            q.pop();
+            int x=front.fi;
+            int steps=front.se;
+            if(x==n*n)
+                return steps;
+            for(ll i=1;i<=6 and x+i<=n*n;i++)
+            {
+                ll newx=x+i;
+                ll r=0,c=0;
+                getCordinate(n,newx,r,c);//yh function main h isko ache se likhna
+                newx=(board[r][c]==-1)?newx:board[r][c];
+                if(!visited[newx])
+                {
+                  q.push(mp(newx,steps+1));
+                    visited[newx]=true;
+                }
+            }
+        }
+        return -1;
+    }
+};
