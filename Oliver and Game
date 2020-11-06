@@ -1,0 +1,111 @@
+/*
+********************
+Author : Samarth Gupta
+********************
+*/
+#include <algorithm>
+#include <bits/stdc++.h>
+#include <unordered_map>
+#include <unordered_set>
+using namespace std;
+#define mod (int) 998244353
+#define MOD (int) 1e9+7
+// Big two primes
+#define X 1001100011100001111ll
+#define all(a) a.begin(),a.end()
+#define for0(i, n) for (int i = 0; i < n; i++)
+#define for1(i, n) for (int i = 1; i <= n; i++)
+#define loop(i,a,b) for (int i = a; i < b; i++)
+#define bloop(i,a,b) for (int i = a ; i>=b;i--)
+#define t int t; cin >> t; while (t--)
+#define int long long
+#define ll long long
+#define float long double
+#define pb emplace_back
+#define fio ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL)
+#define rr return 0
+#define prec(n) fixed<<setprecision(n)
+#define maxpq priority_queue<int>
+#define minpq priority_queue<int, vector<int>, greater<int> >
+#define inf (int)(1e18)
+#define ini(a, i) memset(a, i, sizeof(a))
+#define vi vector<int>
+#define fi first
+#define se second
+#define endl "\n"
+#define ii pair<int, int>
+#define vii vector<ii>
+#define sz(s) s.size()
+#define bits(n) __builtin_popcount(n)
+#define mx *max_element
+#define mn *min_element
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ub upper_bound
+#define lb lower_bound
+#define pr(a) for(auto x : a) cout<<x<<" "; cout<<"\n";
+const int MAXN = (int)((1e5) + 100);
+int gcd(int a,int b){   if(b==0)return a;else return gcd(b,a%b);}
+int max(int a, int b) {if (a > b) return a; else return b;}
+int min(int a, int b) {if (a < b) return a; else return b;}
+void prl(int x) {cout << x << endl;}
+const int N =  (int)(1 * 1e6 + 10);
+using namespace std;
+vector<int>in(MAXN,0);
+vector<int>out(MAXN,0);
+vector<int>visited(MAXN,0);
+vector<int>adj[MAXN];
+int timer=0;
+void dfs(int i)
+{
+    visited[i]=1;
+    in[i]=timer++;
+    for(int v:adj[i])
+    {
+        if(!visited[v])
+        dfs(v);
+    }
+    out[i]=timer++;
+    //left phle akar khtm ho gya hga islie 0 6 5 bali query m false h kyuki 6 right m h aur 5 left m th phle right se dfs pura hga th uska in and out phle hi assign ho chuka hga
+}
+bool check(ll x,ll y)
+{
+   if(in[x]<in[y] and out[x]>out[y])//check wheter y lies in x subtree or not
+   return 1;
+   return 0;
+}
+signed main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);cout.tie(NULL);
+    ll n;
+    cin>>n;
+    ll m=n-1;
+    while(m--)
+    {
+        ll u,v;
+        cin>>u>>v;
+        adj[u].pb(v);
+    }
+    dfs(1);
+    ll q;cin>>q;
+    while(q--)
+    {
+        ll state,oliver,bob;
+        cin>>state>>oliver>>bob;
+        if(state==0)
+        {
+            if(check(oliver,bob))//oliver phle ho
+            yes;
+            else
+            no;
+        }
+        else if(state==1)
+        {
+            if(check(bob,oliver))//bob phle ho
+            yes;
+            else
+            no;
+        }
+    }
+}
