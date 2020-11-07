@@ -1,0 +1,85 @@
+1) Initialize the result as {}
+2) Consider a set of all edges in given graph.  Let the set be E.
+3) Do following while E is not empty
+...a) Pick an arbitrary edge (u, v) from set E and add 'u' and 'v' to result
+...b) Remove all edges from E which are either incident on u or v.
+4) Return result 
+
+
+void Graph::printVertexCover()
+{
+    // Initialize all vertices as not visited.
+    bool visited[V];
+    for (int i=0; i<V; i++)
+        visited[i] = false;
+ 
+    list<int>::iterator i;
+ 
+    // Consider all edges one by one
+    for (int u=0; u<V; u++)
+    {
+        // An edge is only picked when both visited[u] and visited[v]
+        // are false
+        if (visited[u] == false)
+        {
+            // Go through all adjacents of u and pick the first not
+            // yet visited vertex (We are basically picking an edge
+            // (u, v) from remaining edges.
+            for (i= adj[u].begin(); i != adj[u].end(); ++i)
+            {
+                int v = *i;
+                if (visited[v] == false)
+                {
+                     // Add the vertices (u, v) to the result set.
+                     // We make the vertex u and v visited so that
+                     // all edges from/to them would be ignored
+                     visited[v] = true;
+                     visited[u]  = true;
+                     break;
+                }
+            }
+        }
+    }
+ 
+    // Print the vertex cover
+    for (int i=0; i<V; i++)
+        if (visited[i])
+          cout << i << " ";
+}
+
+Set 2 (Dynamic Programming Solution for Tree)
+
+The idea is to consider following two possibilities for root and recursively for all nodes down the root.
+1) Root is part of vertex cover: In this case root covers all children edges. We recursively calculate size of vertex covers for left and right subtrees and add 1 to the result (for root).
+
+2) Root is not part of vertex cover: In this case, both children of root must be included in vertex cover to cover all root to children edges. We recursively calculate size of vertex covers of all grandchildren and number of children to the result (for two children of root).
+
+int vCover(struct node *root) 
+{ 
+    // The size of minimum vertex cover is zero if tree is empty or there 
+    // is only one node 
+    if (root == NULL) 
+        return 0; 
+    if (root->left == NULL && root->right == NULL) 
+        return 0; 
+  
+    // If vertex cover for this node is already evaluated, then return it 
+    // to save recomputation of same subproblem again. 
+    if (root->vc != 0) 
+        return root->vc; 
+  
+    // Calculate size of vertex cover when root is part of it 
+    int size_incl = 1 + vCover(root->left) + vCover(root->right); 
+  
+    // Calculate size of vertex cover when root is not part of it 
+    int size_excl = 0; 
+    if (root->left) 
+      size_excl += 1 + vCover(root->left->left) + vCover(root->left->right); 
+    if (root->right) 
+      size_excl += 1 + vCover(root->right->left) + vCover(root->right->right); 
+  
+    // Minimum of two values is vertex cover, store it before returning 
+    root->vc =  min(size_incl, size_excl); 
+  
+    return root->vc; 
+} 
