@@ -1,0 +1,3 @@
+. A graph can be divided in two cliques if its complement graph is Bipartitie. So below are two steps to find if graph can be divided in two Cliques or not.
+1.Find complement of Graph. Below is complement graph is above shown graph. In complement, all original edges are removed. And the vertices which did not have an edge between them, now have an edge connecting them.
+2.Return true if complement is Bipartite, else false. Above shown graph is Bipartite. Checking whether a Graph is Biparitite 
